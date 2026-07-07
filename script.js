@@ -3,6 +3,8 @@
   const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwucf4KV-p6bv90O54Ca-A04Q1fs1L7eBOaT3MpHF7BSaZ0_1M-yO2a47MRS7VQ2HGG/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for local demo mode
   // ==========================================================================================
 
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  
   const DEMO_MODE = !SHEET_API_URL;
 
   const DEFAULT_COURSES = [

@@ -8,7 +8,6 @@
   const DEFAULT_COURSES = [
     'D.PHARMA','B.PHARMA','P.B.B.Sc-Nursing','GNM-Nursing','B.TECH',
     'Foreign Language Training-German','Foreign Language Training-Japanese',
-    'Foreign Language Training-French','Foreign Language Training-Spanish',
     'Other'
   ];
 
@@ -85,7 +84,7 @@
     panel.innerHTML = `
       <div class="lt-card">
         <h2>Student / Parent Registration</h2>
-        <p class="lt-sub">Only what's needed to start a counselling call. Shared with the admissions team under referral code <strong>${state.code}</strong>.</p>
+        <p class="lt-sub">This data is important for initiating a counselling call with the admissions team.</p>
 
         <label style="display:block; font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;">Who is filling this form?</label>
         <div class="lt-radiogroup" id="lt-filler-group">
@@ -103,7 +102,7 @@
 
           <div class="lt-field"><label>Student name</label><input required name="studentName" placeholder="Full name"></div>
           <div class="lt-row">
-            <div class="lt-field"><label>Student mobile</label><input required name="studentPhone" placeholder="10-digit mobile" pattern="[0-9+ ]{7,15}"></div>
+            <div class="lt-field"><label>Student mobile</label><input required name="studentPhone" placeholder="10-digit mobile-Indian Nos only" pattern="[0-9+ ]{7,15}"></div>
             <div class="lt-field"><label>Email</label><input type="email" name="email" placeholder="name@example.com"></div>
           </div>
           <div class="lt-row">

@@ -1,0 +1,24 @@
+<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="220" fill="#F6F5F1"/>
+  <circle cx="160" cy="200" r="120" fill="#EFE7D8"/>
+  <rect x="60" y="150" width="200" height="10" fill="#8C5F22"/>
+  <g>
+    <rect x="90" y="90" width="34" height="60" rx="4" fill="#fff" stroke="#B8813A" stroke-width="4"/>
+    <rect x="90" y="90" width="34" height="18" fill="#B8813A"/>
+    <circle cx="107" cy="128" r="4" fill="#3D6C8C"/>
+    <circle cx="98" cy="138" r="4" fill="#B2483C"/>
+    <circle cx="116" cy="138" r="4" fill="#3E7C5A"/>
+  </g>
+  <g>
+    <path d="M155 95 h30 v20 l16 35 q4 8 -6 8 h-50 q-10 0 -6 -8 l16 -35 z" fill="#fff" stroke="#B8813A" stroke-width="4"/>
+    <path d="M148 128 h44" stroke="#B8813A" stroke-width="3"/>
+    <circle cx="160" cy="140" r="3" fill="#B8813A"/>
+    <circle cx="172" cy="146" r="3" fill="#B8813A"/>
+    <circle cx="182" cy="136" r="3" fill="#B8813A"/>
+  </g>
+  <g>
+    <ellipse cx="230" cy="145" rx="20" ry="8" fill="#8C5F22"/>
+    <path d="M212 100 q0 -14 18 -14 q18 0 18 14 v45 h-36 z" fill="#3D6C8C"/>
+    <rect x="212" y="120" width="36" height="10" fill="#fff" opacity=".6"/>
+  </g>
+</svg>

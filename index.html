@@ -49,7 +49,7 @@
   <div class="lt-shell">
     <div class="lt-header">
       <div class="lt-title">Students Admissions Enquiry<small>Kindly fill in the student details...</small></div>
-     // <div class="lt-code-pill" id="lt-code-pill">—</div>
+      <!-- <div class="lt-code-pill" id="lt-code-pill">—</div> -->
     </div>
     <div id="lt-mode-banner"></div>
     <div id="lt-panel"></div>
@@ -65,7 +65,7 @@
   const DEMO_MODE = !SHEET_API_URL;
   const DEFAULT_COURSES = ['D.PHARMA','B.PHARMA','P.B.B.Sc-Nursing','GNM-Nursing','B.TECH','Other'];
 
-  let state = { code:'NOTE DOWN YOUR REFERRAL CODE WITHOUT FAIL', courses:DEFAULT_COURSES.slice() };
+  let state = { code:'SGNG', courses:DEFAULT_COURSES.slice() };
 
   const panel = document.getElementById('lt-panel');
   const codePill = document.getElementById('lt-code-pill');
@@ -150,7 +150,7 @@ async function loadConfig(){
     panel.innerHTML = `
       <div class="lt-card">
         <h2>Student / Parent Registration</h2>
-        <p class="lt-sub">This data is shared with the admissions team under referral code only <strong>${state.code}</strong>.</p>
+        <p class="lt-sub">Only what's needed to start a counselling call. Shared with the admissions team under referral code <strong>${state.code}</strong>.</p>
 
         <label style="display:block; font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;">Who is filling this form?</label>
         <div class="lt-radiogroup" id="lt-filler-group">

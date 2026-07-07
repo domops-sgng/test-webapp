@@ -1,6 +1,6 @@
 (function(){
   // ============ CONFIG — paste your Apps Script Web App URL here once deployed ============
-  const SHEET_API_URL = ""; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for local demo mode
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby-tU7KS4Xeo-GhNkUK4kbbmtBHJSa_cKLsFCVLK73S_A5jVoJTemGKUlPCHLRecjZB/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for local demo mode
   // ==========================================================================================
 
   const DEMO_MODE = !SHEET_API_URL;

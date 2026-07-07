@@ -1,103 +1,54 @@
 <style>
   :root{
     --paper:#F6F5F1; --ink:#1E2A33; --ink-soft:#5B6B72; --line:#DAD6CC;
-    --gold:#B8813A; --gold-deep:#8C5F22; --card:#FFFFFF;
-    --green:#3E7C5A; --red:#B2483C; --amber:#C08A2E; --blue:#3D6C8C; --slate:#6B7680;
-    --radius:10px;
+    --gold:#B8813A; --gold-deep:#8C5F22; --card:#FFFFFF; --green:#3E7C5A; --red:#B2483C;
     --font-display:'Fraunces','Georgia',serif;
     --font-body:'IBM Plex Sans','Segoe UI',sans-serif;
     --font-mono:'IBM Plex Mono',monospace;
   }
   * { box-sizing:border-box; }
   .lt-root{ font-family:var(--font-body); color:var(--ink); background:var(--paper); min-height:100%; line-height:1.45; }
-  .lt-shell{ max-width:880px; margin:0 auto; padding:26px 20px 60px; }
+  .lt-shell{ max-width:640px; margin:0 auto; padding:26px 20px 60px; }
   .lt-header{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:20px; border-bottom:1px solid var(--line); padding-bottom:14px; }
-  .lt-title{ font-family:var(--font-display); font-size:25px; font-weight:600; letter-spacing:-.01em; }
+  .lt-title{ font-family:var(--font-display); font-size:24px; font-weight:600; letter-spacing:-.01em; }
   .lt-title small{ display:block; font-family:var(--font-body); font-size:12px; color:var(--ink-soft); font-weight:500; margin-top:3px; letter-spacing:.02em; }
   .lt-code-pill{ font-family:var(--font-mono); font-size:11.5px; background:var(--gold); color:#fff; padding:5px 10px; border-radius:20px; white-space:nowrap; }
-  .lt-mode-banner{ background:#FBF3E3; border:1px solid var(--amber); color:#7A5A1E; font-size:12.5px; padding:8px 14px; border-radius:8px; margin-bottom:18px; }
+  .lt-mode-banner{ background:#FBF3E3; border:1px solid var(--gold); color:#7A5A1E; font-size:12.5px; padding:8px 14px; border-radius:8px; margin-bottom:18px; }
 
-  .lt-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px; }
-  .lt-card h2{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 4px; }
-  .lt-card p.lt-sub{ color:var(--ink-soft); font-size:13px; margin:0 0 16px; }
+  .lt-card{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:24px; }
+  .lt-card h2{ font-family:var(--font-display); font-size:19px; font-weight:600; margin:0 0 4px; }
+  .lt-card p.lt-sub{ color:var(--ink-soft); font-size:13px; margin:0 0 18px; }
 
   .lt-field{ margin-bottom:14px; }
   .lt-field label{ display:block; font-size:12px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; }
   .lt-field input, .lt-field select, .lt-field textarea{
     width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:6px; font-family:var(--font-body); font-size:14.5px; color:var(--ink); background:#fff;
   }
-  .lt-field input:focus, .lt-field select:focus, .lt-field textarea:focus{ outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold); }
+  .lt-field input:focus, .lt-field select:focus{ outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold); }
   .lt-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media (max-width:560px){ .lt-row{ grid-template-columns:1fr; } }
+  @media (max-width:520px){ .lt-row{ grid-template-columns:1fr; } }
 
   .lt-radiogroup{ display:flex; gap:10px; margin-bottom:16px; }
-  .lt-radio{ flex:1; border:1px solid var(--line); border-radius:8px; padding:12px; cursor:pointer; text-align:center; font-weight:600; font-size:14px; color:var(--ink-soft); transition:.15s; }
+  .lt-radio{ flex:1; border:1px solid var(--line); border-radius:8px; padding:12px; cursor:pointer; text-align:center; font-weight:600; font-size:14px; color:var(--ink-soft); }
   .lt-radio.active{ border-color:var(--gold); background:#FBF3E3; color:var(--gold-deep); }
   .lt-radio input{ display:none; }
 
   .lt-checkbox{ display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--ink-soft); margin:16px 0; }
   .lt-checkbox input{ width:auto; margin-top:3px; }
 
-  .lt-btn{ font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 20px; border-radius:6px; border:none; cursor:pointer; background:var(--gold); color:#fff; }
+  .lt-btn{ font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 20px; border-radius:6px; border:none; cursor:pointer; background:var(--gold); color:#fff; width:100%; }
   .lt-btn:hover{ background:var(--gold-deep); }
   .lt-btn:disabled{ background:var(--line); color:var(--ink-soft); cursor:not-allowed; }
-  .lt-btn-ghost{ background:none; border:1px solid var(--line); color:var(--ink); }
-  .lt-btn-ghost:hover{ background:var(--paper); }
-  .lt-btn-sm{ font-size:12.5px; padding:6px 12px; }
 
   .lt-success{ background:#EEF5EF; border:1px solid var(--green); color:var(--green); padding:16px; border-radius:8px; font-size:14px; }
   .lt-success .lt-idbox{ font-family:var(--font-mono); font-size:17px; font-weight:700; color:var(--ink); background:#fff; border:1px dashed var(--green); padding:8px 12px; border-radius:6px; display:inline-block; margin-top:8px; }
   .lt-error{ background:#F7EBE8; border:1px solid var(--red); color:var(--red); padding:12px 14px; border-radius:8px; font-size:13.5px; margin-bottom:14px; }
-
-  .lt-lead-summary{ background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px; font-size:14px; }
-  .lt-lead-summary .lt-lg{ display:grid; grid-template-columns:1fr 1fr; gap:6px 20px; margin:0; }
-  .lt-lead-summary dt{ color:var(--ink-soft); font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; }
-  .lt-lead-summary dd{ margin:0 0 8px; font-weight:600; }
-
-  .lt-badge{ display:inline-block; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:.03em; }
-  .b-new{ background:#E7E9EA; color:var(--slate); }
-  .b-pos{ background:#E4F0E8; color:var(--green); }
-  .b-neg{ background:#F5E7E4; color:var(--red); }
-  .b-time{ background:#F3EBDC; color:var(--amber); }
-  .b-unable{ background:#EEE5D9; color:#8A6A3A; }
-  .b-process{ background:#E4EDF3; color:var(--blue); }
-  .b-complete{ background:#DFE9E2; color:var(--gold-deep); border:1px solid var(--gold); }
-
-  .lt-history{ margin-top:16px; border-top:1px solid var(--line); padding-top:14px; }
-  .lt-history-item{ font-size:13px; padding:9px 0; border-bottom:1px dashed var(--line); }
-  .lt-history-item:last-child{ border-bottom:none; }
-  .lt-history-item .lt-hmeta{ color:var(--ink-soft); font-size:11.5px; margin-top:2px; }
-  .lt-history-item .lt-hnote{ margin-top:3px; }
-
-  .lt-stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:10px; margin-bottom:20px; }
-  .lt-stat{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
-  .lt-stat .lt-stat-n{ font-family:var(--font-display); font-size:21px; font-weight:700; }
-  .lt-stat .lt-stat-l{ font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.03em; }
-
-  .lt-filter-row{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
-  .lt-chip{ font-size:12px; font-weight:600; padding:6px 12px; border-radius:20px; border:1px solid var(--line); background:#fff; cursor:pointer; color:var(--ink-soft); }
-  .lt-chip.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
-
-  .lt-table-wrap{ overflow-x:auto; }
-  table.lt-table{ width:100%; border-collapse:collapse; font-size:13.5px; }
-  table.lt-table th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft); padding:8px 10px; border-bottom:2px solid var(--line); white-space:nowrap; }
-  table.lt-table td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
-  table.lt-table tr:hover td{ background:#FBFAF7; }
-  .lt-idlink{ font-family:var(--font-mono); font-weight:700; color:var(--gold-deep); background:none; border:none; cursor:pointer; padding:0; font-size:13px; }
-  .lt-idlink:hover{ text-decoration:underline; }
-
-  .lt-empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:14px; }
-  .lt-muted{ color:var(--ink-soft); font-size:12.5px; }
-  .lt-settings-toggle{ font-size:12px; color:var(--ink-soft); background:none; border:none; cursor:pointer; text-decoration:underline; padding:0; }
-
-  .lt-gate{ max-width:340px; margin:60px auto; text-align:center; }
-  .lt-gate .lt-card{ text-align:left; }
 </style>
 
 <div class="lt-root">
-  <div class="lt-shell" id="lt-shell">
+  <div class="lt-shell">
     <div class="lt-header">
-      <div class="lt-title" id="lt-title-block">Admissions Lead Desk<small id="lt-subtitle">Loading…</small></div>
+      <div class="lt-title">Students Admissions Enquiry<small>Kindly fill in the student details...</small></div>
       <div class="lt-code-pill" id="lt-code-pill">—</div>
     </div>
     <div id="lt-mode-banner"></div>
@@ -107,46 +58,22 @@
 
 <script>
 (function(){
-  // ============ CONFIG — swap this tomorrow once the Apps Script is deployed ============
-  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby-tU7KS4Xeo-GhNkUK4kbbmtBHJSa_cKLsFCVLK73S_A5jVoJTemGKUlPCHLRecjZB/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for demo mode
-  // =========================================================================================
+  // ============ CONFIG — paste your Apps Script Web App URL here once deployed ============
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby-tU7KS4Xeo-GhNkUK4kbbmtBHJSa_cKLsFCVLK73S_A5jVoJTemGKUlPCHLRecjZB/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for local demo mode
+  // ==========================================================================================
 
   const DEMO_MODE = !SHEET_API_URL;
+  const DEFAULT_COURSES = ['D.PHARMA','B.PHARMA','P.B.B.Sc-Nursing','GNM-Nursing','B.TECH','Other'];
 
-  const STATUSES = [
-    {key:'new', label:'New', badge:'b-new'},
-    {key:'pos', label:'Contacted – Positive', badge:'b-pos'},
-    {key:'neg', label:'Contacted – Negative', badge:'b-neg'},
-    {key:'time', label:'Contacted – Need More Time', badge:'b-time'},
-    {key:'unable', label:'Unable to Contact', badge:'b-unable'},
-    {key:'process', label:'Admission – Under Process', badge:'b-process'},
-    {key:'complete', label:'Admission Complete', badge:'b-complete'}
-  ];
-  const statusMap = Object.fromEntries(STATUSES.map(s=>[s.key,s]));
-  const DEFAULT_COURSES = ['BBA','BCA','B.Com','B.Tech','MBA','M.Com','Other'];
-  const DEFAULT_PASSCODE = '1234';
-
-  const params = new URLSearchParams(window.location.search);
-  const VIEW = ['student','counsellor','dashboard'].includes(params.get('view')) ? params.get('view') : 'student';
-
-  let state = {
-    code:'REF', nextSerial:1, courses:DEFAULT_COURSES.slice(), passcode:DEFAULT_PASSCODE,
-    leads:{}, leadOrder:[], filter:'all',
-    unlocked:false, passInput:'', passError:'',
-    counselSearch:'', counselLoaded:null, counselError:''
-  };
+  let state = { code:'SGNG-REF', courses:DEFAULT_COURSES.slice() };
 
   const panel = document.getElementById('lt-panel');
   const codePill = document.getElementById('lt-code-pill');
-  const subtitle = document.getElementById('lt-subtitle');
   const modeBanner = document.getElementById('lt-mode-banner');
 
-  function badgeHtml(k){ const s = statusMap[k] || statusMap.new; return `<span class="lt-badge ${s.badge}">${s.label}</span>`; }
-  function fmtDate(iso){ try{ return new Date(iso).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}catch(e){return iso;} }
-  function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  // ============ API LAYER — same contract for demo mode and real Apps Script ============
+  // ---------- API layer: talks to Apps Script if configured, else falls back to local demo storage ----------
   async function apiCall(action, payload){
     if(!DEMO_MODE){
       const res = await fetch(SHEET_API_URL, {
@@ -159,103 +86,67 @@
     return localApi(action, payload);
   }
 
-  // ---- local demo fallback (window.storage, shared) ----
-  async function localApi(action, payload){
-    switch(action){
-      case 'getConfig': {
-        try{
-          const r = await window.storage.get('lt-config', true);
-          return r && r.value ? JSON.parse(r.value) : await localApi('resetConfig');
-        }catch(e){ return await localApi('resetConfig'); }
+async function localApi(action, payload){
+  switch(action){
+    case 'getConfig': {
+      try{
+        const r = await window.storage.get('lt-config', true);
+        return r && r.value ? JSON.parse(r.value) : await localApi('resetConfig');
+      }catch(e){ return await localApi('resetConfig'); }
+    }
+    case 'resetConfig': {
+      // Keep cfg.code as just the root prefix 'SGNG'
+      const cfg = {code:'SGNG', nextSerial:1, courses:DEFAULT_COURSES};
+      await window.storage.set('lt-config', JSON.stringify(cfg), true);
+      return cfg;
+    }
+    case 'submitLead': {
+      const cfg = await localApi('getConfig');
+      const serial = cfg.nextSerial;
+      
+      // 1. Helper logic to generate 6 random uppercase alphanumeric characters
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let randomAlpha = '';
+      for (let i = 0; i < 6; i++) {
+        randomAlpha += chars.charAt(Math.random() * chars.length | 0);
       }
-      case 'resetConfig': {
-        const cfg = {code:'REF', nextSerial:1, courses:DEFAULT_COURSES, passcode:DEFAULT_PASSCODE};
-        await window.storage.set('lt-config', JSON.stringify(cfg), true);
-        return cfg;
-      }
-      case 'setConfig': {
-        await window.storage.set('lt-config', JSON.stringify(payload), true);
-        return payload;
-      }
-      case 'submitLead': {
-        const cfg = await localApi('getConfig');
-        const serial = cfg.nextSerial;
-        const id = `${cfg.code}-${String(serial).padStart(3,'0')}`;
-        const lead = Object.assign({}, payload, {
-          id, submittedAt:new Date().toISOString(), status:'new',
-          history:[{status:'new', note:'Lead submitted', contactDate:null, by:'Form', loggedAt:new Date().toISOString()}]
-        });
-        await window.storage.set('lt-lead:'+id, JSON.stringify(lead), true);
-        let idx = [];
-        try{ const r = await window.storage.get('lt-index', true); idx = r && r.value ? JSON.parse(r.value) : []; }catch(e){}
-        idx.push(id);
-        await window.storage.set('lt-index', JSON.stringify(idx), true);
-        cfg.nextSerial = serial + 1;
-        await localApi('setConfig', cfg);
-        return {id};
-      }
-      case 'getLead': {
-        try{
-          const r = await window.storage.get('lt-lead:'+payload.id, true);
-          return r && r.value ? JSON.parse(r.value) : null;
-        }catch(e){ return null; }
-      }
-      case 'updateStatus': {
-        const lead = await localApi('getLead', {id:payload.id});
-        if(!lead) return {error:'not found'};
-        lead.status = payload.status;
-        lead.history.push({status:payload.status, note:payload.note, contactDate:payload.contactDate, by:payload.by, loggedAt:new Date().toISOString()});
-        await window.storage.set('lt-lead:'+lead.id, JSON.stringify(lead), true);
-        return lead;
-      }
-      case 'listLeads': {
-        let idx = [];
-        try{ const r = await window.storage.get('lt-index', true); idx = r && r.value ? JSON.parse(r.value) : []; }catch(e){}
-        const leads = [];
-        for(const id of idx){
-          const l = await localApi('getLead', {id});
-          if(l) leads.push(l);
-        }
-        return {leads};
-      }
-      case 'checkPasscode': {
-        const cfg = await localApi('getConfig');
-        return {ok: payload.passcode === cfg.passcode};
-      }
+
+      // 2. Pad the serial number to 4 digits (e.g., 0001)
+      const paddedSerial = String(serial).padStart(4, '0');
+
+      // 3. Combine them to match your format: SGNG-0001-XXXXXX
+      const id = `${cfg.code}-${paddedSerial}-${randomAlpha}`;
+
+      // 4. Save the lead data with the new unique ID
+      await window.storage.set('lt-lead:'+id, JSON.stringify(Object.assign({}, payload, {id, submittedAt:new Date().toISOString()})), true);
+      
+      // 5. Increment the serial number for the next lead and save configuration
+      cfg.nextSerial = serial + 1;
+      await window.storage.set('lt-config', JSON.stringify(cfg), true);
+      
+      return {id};
     }
   }
-  // =========================================================================================
+}
 
-  async function loadConfigIntoState(){
-    const cfg = await apiCall('getConfig');
-    state.code = cfg.code || 'REF';
-    state.nextSerial = cfg.nextSerial || 1;
-    state.courses = (cfg.courses && cfg.courses.length) ? cfg.courses : DEFAULT_COURSES;
-    state.passcode = cfg.passcode || DEFAULT_PASSCODE;
-    codePill.textContent = state.code;
-  }
+async function loadConfig(){
+  const cfg = await apiCall('getConfig');
+  // Dynamic fallback to 'SGNG' if code is missing
+  state.code = cfg.code || 'SGNG';
+  state.courses = (cfg.courses && cfg.courses.length) ? cfg.courses : DEFAULT_COURSES;
+  codePill.textContent = state.code;
+}
 
   async function init(){
     modeBanner.innerHTML = DEMO_MODE
-      ? `<div class="lt-mode-banner">Demo mode — data is stored temporarily for testing. Paste your Google Sheet Apps Script URL into the SHEET_API_URL constant to switch to the real backend.</div>`
+      ? `<div class="lt-mode-banner">Demo mode — data is stored temporarily for testing. Paste your Google Sheet Apps Script URL into the SHEET_API_URL constant to switch to the real Sheet.</div>`
       : '';
-    panel.innerHTML = `<div class="lt-empty">Loading…</div>`;
-    await loadConfigIntoState();
-
-    if(VIEW==='student'){
-      subtitle.textContent = 'Registration';
-      renderStudentView();
-    } else if(VIEW==='counsellor'){
-      subtitle.textContent = 'Counsellor Desk';
-      renderCounsellorGate();
-    } else {
-      subtitle.textContent = 'Pipeline Dashboard';
-      renderDashboardGate();
-    }
+    panel.innerHTML = `<div class="lt-card">Loading…</div>`;
+    await loadConfig();
+    renderForm();
   }
 
-  // ============ STUDENT VIEW ============
-  function renderStudentView(){
+  function renderForm(){
     panel.innerHTML = `
       <div class="lt-card">
         <h2>Student / Parent Registration</h2>
@@ -352,250 +243,6 @@
       document.getElementById('lt-submit-result').innerHTML = `<div class="lt-error">Something went wrong saving this — please try again.</div>`;
     }
     btn.disabled = false; btn.textContent = 'Submit details';
-  }
-
-  // ============ COUNSELLOR VIEW ============
-  function renderCounsellorGate(){
-    // No passcode required for counsellor by spec — direct access via the link.
-    renderCounsellor();
-  }
-
-  function renderCounsellor(){
-    const lead = state.counselLoaded;
-    panel.innerHTML = `
-      <div class="lt-card">
-        <h2>Find a Lead</h2>
-        <p class="lt-sub">Enter the Lead ID given by the student/parent (e.g. ${state.code}-001).</p>
-        <div style="display:flex; gap:10px;">
-          <input id="lt-search-input" placeholder="${state.code}-001" style="flex:1; padding:10px 12px; border:1px solid var(--line); border-radius:6px; font-family:var(--font-mono);" value="${state.counselSearch}">
-          <button class="lt-btn" id="lt-search-btn">Find</button>
-        </div>
-        ${state.counselError ? `<div class="lt-error" style="margin-top:12px;">${state.counselError}</div>` : ''}
-      </div>
-      <div id="lt-lead-detail"></div>
-    `;
-    document.getElementById('lt-search-btn').addEventListener('click', onSearchLead);
-    document.getElementById('lt-search-input').addEventListener('keydown', e=>{ if(e.key==='Enter') onSearchLead(); });
-    if(lead) renderLeadDetail(lead);
-  }
-
-  async function onSearchLead(){
-    const val = document.getElementById('lt-search-input').value.trim().toUpperCase();
-    state.counselSearch = val;
-    if(!val){ state.counselError='Enter a Lead ID.'; state.counselLoaded=null; renderCounsellor(); return; }
-    const found = await apiCall('getLead', {id:val});
-    if(!found){ state.counselError = `No lead found with ID "${val}".`; state.counselLoaded=null; renderCounsellor(); return; }
-    state.counselError=''; state.counselLoaded = found;
-    renderCounsellor();
-  }
-
-  function renderLeadDetail(lead){
-    const box = document.getElementById('lt-lead-detail');
-    if(!box) return;
-    const displayName = lead.studentName;
-    const lastNote = lead.history && lead.history.length ? lead.history[lead.history.length-1] : null;
-
-    box.innerHTML = `
-      <div class="lt-card">
-        <h2>${escapeHtml(displayName)} <span style="font-family:var(--font-mono); font-size:13px; color:var(--ink-soft); font-weight:400;">— ${lead.id}</span></h2>
-        <p class="lt-sub">Submitted ${fmtDate(lead.submittedAt)} · Filled by ${lead.filledBy} · Current status: ${badgeHtml(lead.status)}</p>
-
-        <div class="lt-lead-summary">
-          <dl class="lt-lg">
-            <dt>Student mobile</dt><dd>${escapeHtml(lead.studentPhone)}</dd>
-            <dt>Email</dt><dd>${escapeHtml(lead.email) || '—'}</dd>
-            ${lead.filledBy==='Parent' ? `<dt>Parent name</dt><dd>${escapeHtml(lead.parentName)}</dd><dt>Parent mobile</dt><dd>${escapeHtml(lead.parentPhone)}</dd>` : ''}
-            <dt>City</dt><dd>${escapeHtml(lead.city)}</dd>
-            <dt>Course</dt><dd>${escapeHtml(lead.course)}</dd>
-            <dt>Preferred call time</dt><dd>${escapeHtml(lead.preferredTime)}</dd>
-          </dl>
-        </div>
-
-        <h2 style="font-size:16px;">Log a Follow-up</h2>
-        <form id="lt-update-form">
-          <div class="lt-row">
-            <div class="lt-field"><label>Date contacted</label><input type="date" name="contactDate" value="${todayStr()}"></div>
-            <div class="lt-field"><label>New status</label>
-              <select name="status">
-                ${STATUSES.map(s=>`<option value="${s.key}" ${s.key===lead.status?'selected':''}>${s.label}</option>`).join('')}
-              </select>
-            </div>
-          </div>
-          <div class="lt-field"><label>Counsellor name</label><input name="by" placeholder="Your name" required></div>
-          <div class="lt-field">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-              <label style="margin:0;">Conversation notes</label>
-              ${lastNote ? `<button type="button" class="lt-settings-toggle" id="lt-load-last">carry forward last note</button>` : ''}
-            </div>
-            <textarea name="note" rows="3" placeholder="Call notes, next steps, objections raised, etc."></textarea>
-          </div>
-          <button class="lt-btn" type="submit">Save update</button>
-        </form>
-
-        <div class="lt-history">
-          <p class="lt-sub" style="margin-bottom:8px;">History</p>
-          ${lead.history.slice().reverse().map(h=>`
-            <div class="lt-history-item">
-              ${badgeHtml(h.status)} ${h.contactDate ? `<span class="lt-muted">· contacted ${h.contactDate}</span>` : ''}
-              ${h.note ? `<div class="lt-hnote">${escapeHtml(h.note)}</div>` : ''}
-              <div class="lt-hmeta">logged ${fmtDate(h.loggedAt)}${h.by ? ' · '+escapeHtml(h.by) : ''}</div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-
-    const loadBtn = document.getElementById('lt-load-last');
-    if(loadBtn) loadBtn.addEventListener('click', ()=>{
-      document.querySelector('#lt-update-form textarea[name="note"]').value = lastNote.note || '';
-    });
-
-    document.getElementById('lt-update-form').addEventListener('submit', (e)=>onUpdateStatus(e, lead));
-  }
-
-  async function onUpdateStatus(e, lead){
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const btn = e.target.querySelector('button');
-    btn.disabled = true; btn.textContent='Saving…';
-    const payload = {
-      id: lead.id,
-      status: fd.get('status'),
-      note: (fd.get('note')||'').trim(),
-      contactDate: fd.get('contactDate'),
-      by: (fd.get('by')||'').trim()
-    };
-    try{
-      const updated = await apiCall('updateStatus', payload);
-      state.counselLoaded = updated;
-      renderLeadDetail(updated);
-    }catch(err){
-      btn.disabled=false; btn.textContent='Save update';
-      alert('Could not save — try again.');
-    }
-  }
-
-  // ============ DASHBOARD VIEW (passcode gated) ============
-  function renderDashboardGate(){
-    if(state.unlocked){ renderDashboard(); return; }
-    panel.innerHTML = `
-      <div class="lt-gate">
-        <div class="lt-card">
-          <h2>Restricted</h2>
-          <p class="lt-sub">Enter the passcode to view the pipeline dashboard.</p>
-          <div class="lt-field"><input id="lt-pass-input" type="password" placeholder="Passcode"></div>
-          ${state.passError ? `<div class="lt-error">${state.passError}</div>` : ''}
-          <button class="lt-btn" id="lt-pass-btn" style="width:100%;">Unlock</button>
-        </div>
-      </div>
-    `;
-    document.getElementById('lt-pass-btn').addEventListener('click', onCheckPasscode);
-    document.getElementById('lt-pass-input').addEventListener('keydown', e=>{ if(e.key==='Enter') onCheckPasscode(); });
-  }
-
-  async function onCheckPasscode(){
-    const val = document.getElementById('lt-pass-input').value;
-    const r = await apiCall('checkPasscode', {passcode:val});
-    if(r && r.ok){ state.unlocked = true; renderDashboard(); }
-    else { state.passError = 'Incorrect passcode.'; renderDashboardGate(); }
-  }
-
-  async function renderDashboard(){
-    panel.innerHTML = `<div class="lt-empty">Loading pipeline…</div>`;
-    const { leads: all } = await apiCall('listLeads', {});
-    const counts = {}; STATUSES.forEach(s=>counts[s.key]=0);
-    all.forEach(l=>{ counts[l.status] = (counts[l.status]||0)+1; });
-    const filtered = state.filter==='all' ? all : all.filter(l=>l.status===state.filter);
-
-    panel.innerHTML = `
-      <div class="lt-card">
-        <h2>Pipeline Overview</h2>
-        <p class="lt-sub">${all.length} total lead${all.length===1?'':'s'} under referral code ${state.code}. 
-          <button class="lt-settings-toggle" id="lt-settings-toggle">settings</button>
-        </p>
-        <div id="lt-settings-block" style="display:none; margin-bottom:16px;">
-          <div class="lt-row">
-            <div class="lt-field"><label>Referral code</label><input id="lt-set-code" value="${state.code}" style="text-transform:uppercase; font-family:var(--font-mono);"></div>
-            <div class="lt-field"><label>Dashboard passcode</label><input id="lt-set-pass" value="${state.passcode}"></div>
-          </div>
-          <div class="lt-field"><label>Courses (comma separated)</label><input id="lt-set-courses" value="${state.courses.join(', ')}"></div>
-          <button class="lt-btn lt-btn-ghost lt-btn-sm" id="lt-settings-save">Save settings</button>
-          <p class="lt-muted" style="margin-top:8px;">Referral code changes only affect leads submitted after saving.</p>
-        </div>
-        <div class="lt-stats">
-          ${STATUSES.map(s=>`<div class="lt-stat"><div class="lt-stat-n">${counts[s.key]}</div><div class="lt-stat-l">${s.label}</div></div>`).join('')}
-        </div>
-      </div>
-
-      <div class="lt-filter-row">
-        <button class="lt-chip ${state.filter==='all'?'active':''}" data-f="all">All (${all.length})</button>
-        ${STATUSES.map(s=>`<button class="lt-chip ${state.filter===s.key?'active':''}" data-f="${s.key}">${s.label} (${counts[s.key]})</button>`).join('')}
-      </div>
-
-      <div class="lt-card">
-        ${filtered.length===0 ? `<div class="lt-empty">No leads in this view yet.</div>` : `
-        <div class="lt-table-wrap">
-          <table class="lt-table">
-            <thead><tr><th>Lead ID</th><th>Student</th><th>Filled by</th><th>Mobile</th><th>Course</th><th>City</th><th>Status</th><th>Submitted</th></tr></thead>
-            <tbody>
-              ${filtered.slice().reverse().map(l=>`
-                <tr>
-                  <td><button class="lt-idlink" data-open="${l.id}">${l.id}</button></td>
-                  <td>${escapeHtml(l.studentName)}</td>
-                  <td>${l.filledBy}</td>
-                  <td>${escapeHtml(l.studentPhone)}</td>
-                  <td>${escapeHtml(l.course)}</td>
-                  <td>${escapeHtml(l.city)}</td>
-                  <td>${badgeHtml(l.status)}</td>
-                  <td class="lt-muted">${fmtDate(l.submittedAt)}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>`}
-      </div>
-    `;
-
-    document.querySelectorAll('.lt-chip').forEach(c=>c.addEventListener('click', ()=>{ state.filter=c.dataset.f; renderDashboard(); }));
-    document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click', async ()=>{
-      // jump straight to that lead's detail inline within dashboard for quick lookup
-      const lead = await apiCall('getLead', {id:b.dataset.open});
-      openLeadModalInline(lead);
-    }));
-
-    const toggle = document.getElementById('lt-settings-toggle');
-    toggle.addEventListener('click', ()=>{
-      const block = document.getElementById('lt-settings-block');
-      block.style.display = block.style.display==='none' ? 'block' : 'none';
-    });
-    document.getElementById('lt-settings-save').addEventListener('click', async ()=>{
-      const newCode = document.getElementById('lt-set-code').value.trim().toUpperCase() || state.code;
-      const newPass = document.getElementById('lt-set-pass').value.trim() || state.passcode;
-      const newCourses = document.getElementById('lt-set-courses').value.split(',').map(s=>s.trim()).filter(Boolean);
-      const cfg = { code:newCode, nextSerial:state.nextSerial, courses:newCourses.length?newCourses:state.courses, passcode:newPass };
-      await apiCall('setConfig', cfg);
-      await loadConfigIntoState();
-      renderDashboard();
-    });
-  }
-
-  function openLeadModalInline(lead){
-    if(!lead) return;
-    const html = `
-      <div class="lt-card">
-        <h2>${escapeHtml(lead.studentName)} <span style="font-family:var(--font-mono); font-size:13px; color:var(--ink-soft); font-weight:400;">— ${lead.id}</span></h2>
-        <p class="lt-sub">Status: ${badgeHtml(lead.status)} · Filled by ${lead.filledBy} · ${escapeHtml(lead.city)} · ${escapeHtml(lead.course)}</p>
-        <div class="lt-history">
-          ${lead.history.slice().reverse().map(h=>`
-            <div class="lt-history-item">
-              ${badgeHtml(h.status)} ${h.contactDate ? `<span class="lt-muted">· contacted ${h.contactDate}</span>` : ''}
-              ${h.note ? `<div class="lt-hnote">${escapeHtml(h.note)}</div>` : ''}
-              <div class="lt-hmeta">logged ${fmtDate(h.loggedAt)}${h.by ? ' · '+escapeHtml(h.by) : ''}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
-    panel.insertAdjacentHTML('afterbegin', html);
-    window.scrollTo({top:0, behavior:'smooth'});
   }
 
   init();

@@ -1,250 +1,40 @@
-<style>
-  :root{
-    --paper:#F6F5F1; --ink:#1E2A33; --ink-soft:#5B6B72; --line:#DAD6CC;
-    --gold:#B8813A; --gold-deep:#8C5F22; --card:#FFFFFF; --green:#3E7C5A; --red:#B2483C;
-    --font-display:'Fraunces','Georgia',serif;
-    --font-body:'IBM Plex Sans','Segoe UI',sans-serif;
-    --font-mono:'IBM Plex Mono',monospace;
-  }
-  * { box-sizing:border-box; }
-  .lt-root{ font-family:var(--font-body); color:var(--ink); background:var(--paper); min-height:100%; line-height:1.45; }
-  .lt-shell{ max-width:640px; margin:0 auto; padding:26px 20px 60px; }
-  .lt-header{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:20px; border-bottom:1px solid var(--line); padding-bottom:14px; }
-  .lt-title{ font-family:var(--font-display); font-size:24px; font-weight:600; letter-spacing:-.01em; }
-  .lt-title small{ display:block; font-family:var(--font-body); font-size:12px; color:var(--ink-soft); font-weight:500; margin-top:3px; letter-spacing:.02em; }
-  .lt-code-pill{ font-family:var(--font-mono); font-size:11.5px; background:var(--gold); color:#fff; padding:5px 10px; border-radius:20px; white-space:nowrap; }
-  .lt-mode-banner{ background:#FBF3E3; border:1px solid var(--gold); color:#7A5A1E; font-size:12.5px; padding:8px 14px; border-radius:8px; margin-bottom:18px; }
-
-  .lt-card{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:24px; }
-  .lt-card h2{ font-family:var(--font-display); font-size:19px; font-weight:600; margin:0 0 4px; }
-  .lt-card p.lt-sub{ color:var(--ink-soft); font-size:13px; margin:0 0 18px; }
-
-  .lt-field{ margin-bottom:14px; }
-  .lt-field label{ display:block; font-size:12px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; }
-  .lt-field input, .lt-field select, .lt-field textarea{
-    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:6px; font-family:var(--font-body); font-size:14.5px; color:var(--ink); background:#fff;
-  }
-  .lt-field input:focus, .lt-field select:focus{ outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold); }
-  .lt-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media (max-width:520px){ .lt-row{ grid-template-columns:1fr; } }
-
-  .lt-radiogroup{ display:flex; gap:10px; margin-bottom:16px; }
-  .lt-radio{ flex:1; border:1px solid var(--line); border-radius:8px; padding:12px; cursor:pointer; text-align:center; font-weight:600; font-size:14px; color:var(--ink-soft); }
-  .lt-radio.active{ border-color:var(--gold); background:#FBF3E3; color:var(--gold-deep); }
-  .lt-radio input{ display:none; }
-
-  .lt-checkbox{ display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--ink-soft); margin:16px 0; }
-  .lt-checkbox input{ width:auto; margin-top:3px; }
-
-  .lt-btn{ font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 20px; border-radius:6px; border:none; cursor:pointer; background:var(--gold); color:#fff; width:100%; }
-  .lt-btn:hover{ background:var(--gold-deep); }
-  .lt-btn:disabled{ background:var(--line); color:var(--ink-soft); cursor:not-allowed; }
-
-  .lt-success{ background:#EEF5EF; border:1px solid var(--green); color:var(--green); padding:16px; border-radius:8px; font-size:14px; }
-  .lt-success .lt-idbox{ font-family:var(--font-mono); font-size:17px; font-weight:700; color:var(--ink); background:#fff; border:1px dashed var(--green); padding:8px 12px; border-radius:6px; display:inline-block; margin-top:8px; }
-  .lt-error{ background:#F7EBE8; border:1px solid var(--red); color:var(--red); padding:12px 14px; border-radius:8px; font-size:13.5px; margin-bottom:14px; }
-</style>
-
-<div class="lt-root">
-  <div class="lt-shell">
-    <div class="lt-header">
-      <div class="lt-title">Students Admissions Enquiry<small>Kindly fill in the student details...</small></div>
-      <!-- <div class="lt-code-pill" id="lt-code-pill">—</div> -->
-    </div>
-    <div id="lt-mode-banner"></div>
-    <div id="lt-panel"></div>
-  </div>
-</div>
-
-<script>
-(function(){
-  // ============ CONFIG — paste your Apps Script Web App URL here once deployed ============
-  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby-tU7KS4Xeo-GhNkUK4kbbmtBHJSa_cKLsFCVLK73S_A5jVoJTemGKUlPCHLRecjZB/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec" — leave blank for local demo mode
-  // ==========================================================================================
-
-  const DEMO_MODE = !SHEET_API_URL;
-  const DEFAULT_COURSES = ['D.PHARMA','B.PHARMA','P.B.B.Sc-Nursing','GNM-Nursing','B.TECH','Other'];
-
-  let state = { code:'SGNG', courses:DEFAULT_COURSES.slice() };
-
-  const panel = document.getElementById('lt-panel');
-  const codePill = document.getElementById('lt-code-pill');
-  const modeBanner = document.getElementById('lt-mode-banner');
-
-  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-  // ---------- API layer: talks to Apps Script if configured, else falls back to local demo storage ----------
-  async function apiCall(action, payload){
-    if(!DEMO_MODE){
-      const res = await fetch(SHEET_API_URL, {
-        method:'POST',
-        headers:{'Content-Type':'text/plain;charset=utf-8'}, // avoids CORS preflight against Apps Script
-        body: JSON.stringify(Object.assign({action}, payload||{}))
-      });
-      return await res.json();
-    }
-    return localApi(action, payload);
-  }
-
-async function localApi(action, payload){
-  switch(action){
-    case 'getConfig': {
-      try{
-        const r = await window.storage.get('lt-config', true);
-        return r && r.value ? JSON.parse(r.value) : await localApi('resetConfig');
-      }catch(e){ return await localApi('resetConfig'); }
-    }
-    case 'resetConfig': {
-      // Keep cfg.code as just the root prefix 'SGNG'
-      const cfg = {code:'SGNG', nextSerial:1, courses:DEFAULT_COURSES};
-      await window.storage.set('lt-config', JSON.stringify(cfg), true);
-      return cfg;
-    }
-    case 'submitLead': {
-      const cfg = await localApi('getConfig');
-      const serial = cfg.nextSerial;
-      
-      // 1. Helper logic to generate 6 random uppercase alphanumeric characters
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let randomAlpha = '';
-      for (let i = 0; i < 6; i++) {
-        randomAlpha += chars.charAt(Math.random() * chars.length | 0);
-      }
-
-      // 2. Pad the serial number to 4 digits (e.g., 0001)
-      const paddedSerial = String(serial).padStart(4, '0');
-
-      // 3. Combine them to match your format: SGNG-0001-XXXXXX
-      const id = `${cfg.code}-${paddedSerial}-${randomAlpha}`;
-
-      // 4. Save the lead data with the new unique ID
-      await window.storage.set('lt-lead:'+id, JSON.stringify(Object.assign({}, payload, {id, submittedAt:new Date().toISOString()})), true);
-      
-      // 5. Increment the serial number for the next lead and save configuration
-      cfg.nextSerial = serial + 1;
-      await window.storage.set('lt-config', JSON.stringify(cfg), true);
-      
-      return {id};
-    }
-  }
-}
-
-async function loadConfig(){
-  const cfg = await apiCall('getConfig');
-  // Dynamic fallback to 'SGNG' if code is missing
-  state.code = cfg.code || 'SGNG';
-  state.courses = (cfg.courses && cfg.courses.length) ? cfg.courses : DEFAULT_COURSES;
-  codePill.textContent = state.code;
-}
-
-  async function init(){
-    modeBanner.innerHTML = DEMO_MODE
-      ? `<div class="lt-mode-banner">Demo mode — data is stored temporarily for testing. Paste your Google Sheet Apps Script URL into the SHEET_API_URL constant to switch to the real Sheet.</div>`
-      : '';
-    panel.innerHTML = `<div class="lt-card">Loading…</div>`;
-    await loadConfig();
-    renderForm();
-  }
-
-  function renderForm(){
-    panel.innerHTML = `
-      <div class="lt-card">
-        <h2>Student / Parent Registration</h2>
-        <p class="lt-sub">Only what's needed to start a counselling call. Shared with the admissions team under referral code <strong>${state.code}</strong>.</p>
-
-        <label style="display:block; font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;">Who is filling this form?</label>
-        <div class="lt-radiogroup" id="lt-filler-group">
-          <label class="lt-radio active" data-val="Student"><input type="radio" name="filler" value="Student" checked>Student</label>
-          <label class="lt-radio" data-val="Parent"><input type="radio" name="filler" value="Parent">Parent</label>
-        </div>
-
-        <form id="lt-submit-form">
-          <div id="lt-parent-fields" style="display:none;">
-            <div class="lt-row">
-              <div class="lt-field"><label>Parent name</label><input name="parentName" placeholder="Full name"></div>
-              <div class="lt-field"><label>Parent mobile</label><input name="parentPhone" placeholder="10-digit mobile" pattern="[0-9+ ]{7,15}"></div>
-            </div>
-          </div>
-
-          <div class="lt-field"><label>Student name</label><input required name="studentName" placeholder="Full name"></div>
-          <div class="lt-row">
-            <div class="lt-field"><label>Student mobile</label><input required name="studentPhone" placeholder="10-digit mobile" pattern="[0-9+ ]{7,15}"></div>
-            <div class="lt-field"><label>Email (optional)</label><input type="email" name="email" placeholder="name@example.com"></div>
-          </div>
-          <div class="lt-row">
-            <div class="lt-field"><label>City</label><input required name="city" placeholder="City"></div>
-            <div class="lt-field"><label>Course interested in</label>
-              <select required name="course">
-                <option value="" disabled selected>Select a course</option>
-                ${state.courses.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('')}
-              </select>
-            </div>
-          </div>
-          <div class="lt-field"><label>Best time to call</label>
-            <select name="preferredTime">
-              <option>Morning</option><option>Afternoon</option><option>Evening</option><option>Anytime</option>
-            </select>
-          </div>
-          <label class="lt-checkbox">
-            <input type="checkbox" required name="consent">
-            <span>I agree that these details will be shared with the college's admissions counselling team for the purpose of a callback about admission options.</span>
-          </label>
-          <button class="lt-btn" type="submit">Submit details</button>
-        </form>
-        <div id="lt-submit-result" style="margin-top:16px;"></div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admissions Registration</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="lt-root">
+    <div class="lt-shell">
+      <div class="lt-header">
+        <div class="lt-title">Admissions Registration<small>Interested candidate details</small></div>
+        <div class="lt-code-pill" id="lt-code-pill">—</div>
       </div>
-    `;
 
-    document.querySelectorAll('#lt-filler-group .lt-radio').forEach(r=>{
-      r.addEventListener('click', ()=>{
-        document.querySelectorAll('#lt-filler-group .lt-radio').forEach(x=>x.classList.remove('active'));
-        r.classList.add('active');
-        r.querySelector('input').checked = true;
-        document.getElementById('lt-parent-fields').style.display = r.dataset.val==='Parent' ? 'block' : 'none';
-      });
-    });
+      <div class="lt-carousel" aria-hidden="true">
+        <div class="lt-carousel-track">
+          <div class="lt-carousel-item"><img src="images/nurse-care.svg" alt=""><span>Nursing Care Training</span></div>
+          <div class="lt-carousel-item"><img src="images/pharmacy-lab.svg" alt=""><span>Pharmacy Studies</span></div>
+          <div class="lt-carousel-item"><img src="images/chemistry-lab.svg" alt=""><span>Chemistry Lab</span></div>
+          <div class="lt-carousel-item"><img src="images/medical-lab.svg" alt=""><span>Medical Diagnostics Lab</span></div>
+          <div class="lt-carousel-item"><img src="images/language-training.svg" alt=""><span>Foreign Language Training</span></div>
+          <!-- duplicated for seamless infinite scroll -->
+          <div class="lt-carousel-item"><img src="images/nurse-care.svg" alt=""><span>Nursing Care Training</span></div>
+          <div class="lt-carousel-item"><img src="images/pharmacy-lab.svg" alt=""><span>Pharmacy Studies</span></div>
+          <div class="lt-carousel-item"><img src="images/chemistry-lab.svg" alt=""><span>Chemistry Lab</span></div>
+          <div class="lt-carousel-item"><img src="images/medical-lab.svg" alt=""><span>Medical Diagnostics Lab</span></div>
+          <div class="lt-carousel-item"><img src="images/language-training.svg" alt=""><span>Foreign Language Training</span></div>
+        </div>
+      </div>
 
-    document.getElementById('lt-submit-form').addEventListener('submit', onSubmitLead);
-  }
+      <div id="lt-mode-banner"></div>
+      <div id="lt-panel"></div>
+    </div>
+  </div>
 
-  async function onSubmitLead(e){
-    e.preventDefault();
-    const form = e.target;
-    const fd = new FormData(form);
-    const btn = form.querySelector('button');
-    btn.disabled = true; btn.textContent = 'Submitting…';
-
-    const filledBy = fd.get('filler') || 'Student';
-    const payload = {
-      filledBy,
-      parentName: filledBy==='Parent' ? (fd.get('parentName')||'').trim() : '',
-      parentPhone: filledBy==='Parent' ? (fd.get('parentPhone')||'').trim() : '',
-      studentName: fd.get('studentName').trim(),
-      studentPhone: fd.get('studentPhone').trim(),
-      email: (fd.get('email')||'').trim(),
-      city: fd.get('city').trim(),
-      course: fd.get('course'),
-      preferredTime: fd.get('preferredTime'),
-      consent: true
-    };
-
-    try{
-      const result = await apiCall('submitLead', payload);
-      document.getElementById('lt-submit-result').innerHTML = `
-        <div class="lt-success">
-          Details submitted. Please note this reference ID for follow-up:
-          <div class="lt-idbox">${result.id}</div>
-        </div>`;
-      form.reset();
-      document.getElementById('lt-parent-fields').style.display='none';
-      document.querySelectorAll('#lt-filler-group .lt-radio').forEach(x=>x.classList.remove('active'));
-      document.querySelector('#lt-filler-group .lt-radio[data-val="Student"]').classList.add('active');
-    }catch(err){
-      document.getElementById('lt-submit-result').innerHTML = `<div class="lt-error">Something went wrong saving this — please try again.</div>`;
-    }
-    btn.disabled = false; btn.textContent = 'Submit details';
-  }
-
-  init();
-})();
-</script>
+  <script src="script.js"></script>
+</body>
+</html>

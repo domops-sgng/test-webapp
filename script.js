@@ -104,7 +104,7 @@
           <div class="lt-field"><label>Student name</label><input required name="studentName" placeholder="Full name"></div>
           <div class="lt-row">
             <div class="lt-field"><label>Student mobile</label><input required name="studentPhone" placeholder="10-digit mobile" pattern="[0-9+ ]{7,15}"></div>
-            <div class="lt-field"><label>Email (optional)</label><input type="email" name="email" placeholder="name@example.com"></div>
+            <div class="lt-field"><label>Email</label><input type="email" name="email" placeholder="name@example.com"></div>
           </div>
           <div class="lt-row">
             <div class="lt-field"><label>City</label><input required name="city" placeholder="City"></div>
